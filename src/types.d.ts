@@ -1,5 +1,4 @@
-import {CommandInteraction} from 'discord.js'
-import {EventNames} from './enums'
+import {ClientEvents, CommandInteraction} from 'discord.js'
 
 declare interface ExecuteCommand extends Command {
   execute: (interaction: CommandInteraction) => Promise<void> | void,
@@ -21,7 +20,7 @@ declare interface OptionCommand {
 }
 
 declare interface ExecuteEvent {
-  name: EventNames,
+  name: keyof ClientEvents,
   once: boolean,
-  execute: (...args: any) => void
+  execute: (...args: any[]) => void
 }

@@ -39,6 +39,7 @@ export default class Bot {
       if (event.once) this.client.once(event.name, event.execute)
       else this.client.on(event.name, (...args) => event.execute(...args, this.commands))
     }
+    process.on('unhandledRejection', error => console.error('Unhandled promise rejection:', error))
   }
 
   public destroy(): void {

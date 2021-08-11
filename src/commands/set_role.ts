@@ -7,6 +7,8 @@ const command: ExecuteCommand = {
   execute: async (interaction: CommandInteraction): Promise<void> => {
     // await interaction.deferReply({ephemeral: true})
     await interaction.reply({content: 'Теперь участникам Crypton Academy будет назначаться эта роль.'})
+
+    // TODO записывает в storage какая роль должна быть у участников криптона на этом сервере
   },
   options: [
     {

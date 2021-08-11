@@ -6,6 +6,9 @@ const command: ExecuteCommand = {
   description: 'Останавливает автоматическое назначение ролей участникам Crypton Academy.',
   execute: async (interaction: CommandInteraction): Promise<void> => {
     await interaction.reply({content: 'Автоматическое назначение ролей остановлено!'})
+
+    // TODO останавливает регулярные проверки
+    //  и отключает реагирование на события вступления в дискорд новых участников
   }
 }
 
