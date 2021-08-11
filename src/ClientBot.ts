@@ -30,4 +30,8 @@ export default class ClientBot {
   public once(eventName: EventNames, callback: (...args: any[]) => void): void {
     this.client.once(eventName, callback)
   }
+
+  public destroy(): void {
+    this.client.destroy()
+  }
 }

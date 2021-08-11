@@ -40,4 +40,8 @@ export default class Bot {
       else this.client.on(event.name, (...args) => event.execute(...args, this.commands))
     }
   }
+
+  public destroy(): void {
+    this.client.destroy()
+  }
 }
