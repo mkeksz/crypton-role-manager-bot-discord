@@ -15,7 +15,7 @@ export default class CommandManager {
   public async fetchCommands(): Promise<Command[]> {
     const commands = await this.applicationCommandManager.fetch()
     return commands.map(value => {
-      return {name: value.name, description: value.description} as Command
+      return {name: value.name, description: value.description, options: value.options} as Command
     })
   }
 }
