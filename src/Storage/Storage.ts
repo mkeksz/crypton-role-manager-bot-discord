@@ -18,20 +18,29 @@ export default class Storage {
   }
 
   public async syncModels(): Promise<void> {
-    await this.Guilds.sync({force: true})
+    await this.Guilds.sync()
   }
 
   public async addGuild(id: string, roleAcademyID: string): Promise<void> {
     await this.Guilds.create({id, role_academy_id: roleAcademyID, active: false})
   }
 
-  public async editGuild(id: string, roleAcademyID: string, active: boolean): Promise<void> {
-    await this.Guilds.update({role_academy_id: roleAcademyID, active}, {where: {id}})
+  public async editGuildActive(guildID: string, active: boolean): Promise<void> {
+    await this.Guilds.update({active}, {where: {id: guildID}})
+  }
+
+  public async editGuildRoleAcademyID(guildID: string, roleAcademyID: string): Promise<void> {
+    await this.Guilds.update({role_academy_id: roleAcademyID}, {where: {id: guildID}})
   }
 
   public async getGuild(id: string): Promise<GuildModel | undefined> {
     const guild = await this.Guilds.findOne({where: {id}})
     if (!guild) return undefined
     return {id: guild.id, roleAcademyID: guild.role_academy_id, active: guild.active}
+  }
+
+  public async getGuilds(): Promise<GuildModel[]> {
+    const guilds = await this.Guilds.findAll()
+    return guilds.map(guild => ({id: guild.id, roleAcademyID: guild.role_academy_id, active: guild.active}))
   }
 }

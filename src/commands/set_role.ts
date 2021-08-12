@@ -6,7 +6,7 @@ const command: ExecuteCommand = {
   name: 'set_role',
   description: descriptions.SET_ROLE,
   execute: async (interaction, storage): Promise<void> => {
-    if (!interaction.guild) return interaction.reply(replies.ONLY_SERVER)
+    if (!interaction.guild) return
     await interaction.deferReply({ephemeral: true})
 
     const role = interaction.options.getRole('role')
@@ -16,9 +16,8 @@ const command: ExecuteCommand = {
     }
 
     const guildStorage = await storage.getGuild(interaction.guild.id)
-
     if (!guildStorage) await storage.addGuild(interaction.guild.id, role.id)
-    else await storage.editGuild(guildStorage.id, role.id, guildStorage.active)
+    else await storage.editGuildRoleAcademyID(guildStorage.id, role.id)
 
     await interaction.editReply(replies.ROLE_ASSIGNED(role.name))
   },
