@@ -5,21 +5,21 @@ import descriptions from '../description'
 const command: ExecuteCommand = {
   name: 'set_role',
   description: descriptions.SET_ROLE,
-  execute: async (interaction, storage): Promise<void> => {
+  execute: async (interaction, storage) => {
     if (!interaction.guild) return
     await interaction.deferReply({ephemeral: true})
 
     const role = interaction.options.getRole('role')
-    if (!role) {
-      await interaction.editReply(replies.SET_ROLE)
-      return
-    }
+    const roleBot = interaction.guild.me?.roles.botRole
+    if (!roleBot) return
+    if (!role) return interaction.editReply(replies.SET_ROLE)
+    if (roleBot.rawPosition <= role.position) return interaction.editReply(replies.ROLE_SHOULD_LOWER)
 
     const guildStorage = await storage.getGuild(interaction.guild.id)
     if (!guildStorage) await storage.addGuild(interaction.guild.id, role.id)
     else await storage.editGuildRoleAcademyID(guildStorage.id, role.id)
 
-    await interaction.editReply(replies.ROLE_ASSIGNED(role.name))
+    return interaction.editReply(replies.ROLE_ASSIGNED(role.name))
   },
   options: [
     {

@@ -5,7 +5,7 @@ import replies from '../replies'
 const command: ExecuteCommand = {
   name: 'info',
   description: descriptions.INFO,
-  execute: async (interaction, storage): Promise<void> => {
+  execute: async (interaction, storage) => {
     if (!interaction.guild) return
     await interaction.deferReply({ephemeral: true})
 
