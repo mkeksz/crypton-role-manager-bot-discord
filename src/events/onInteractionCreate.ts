@@ -1,10 +1,11 @@
 import {Interaction, Permissions} from 'discord.js'
 import {ExecuteCommand, ExecuteEvent} from '../types'
+import Storage from '../Storage/Storage'
 
 const event: ExecuteEvent = {
   name: 'interactionCreate',
   once: false,
-  execute: (interaction: Interaction, commands: ExecuteCommand[]) => {
+  execute: (interaction: Interaction, commands: ExecuteCommand[], storage: Storage) => {
     if (!interaction.isCommand()) return
     if (interaction.user.bot) return
 
@@ -15,7 +16,7 @@ const event: ExecuteEvent = {
     if (!command) return interaction.reply({content: 'Такой команды не существует!', ephemeral: true})
 
     try {
-      command.execute(interaction)
+      command.execute(interaction, storage)
     } catch (error) {
       console.error(error)
       return interaction.reply({content: 'При выполнении этой команды произошла ошибка!', ephemeral: true})

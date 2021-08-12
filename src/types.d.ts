@@ -1,7 +1,8 @@
 import {ClientEvents, CommandInteraction} from 'discord.js'
+import Storage from './Storage/Storage'
 
 declare interface ExecuteCommand extends Command {
-  execute: (interaction: CommandInteraction) => Promise<void> | void,
+  execute: (interaction: CommandInteraction, storage: Storage) => Promise<void> | void,
 }
 
 declare interface Command {

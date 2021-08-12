@@ -2,22 +2,26 @@ import {ExecuteEvent, ExecuteCommand} from './types'
 import {isDifferentCommands, loadCommandsFromFiles, throwIdenticalCommandNames} from './command.utils'
 import {loadEventsFromFiles} from './event.utils'
 import ClientBot from './ClientBot'
+import Storage from './Storage/Storage'
 
 const EVENTS_DIR = __dirname + '/events'
 const COMMANDS_DIR = __dirname + '/commands'
 
 export default class Bot {
   private readonly client: ClientBot
+  private readonly storage: Storage
   private events: ExecuteEvent[]
   private commands: ExecuteCommand[]
 
   public constructor() {
     this.client = new ClientBot()
+    this.storage = new Storage()
     this.events = []
     this.commands = []
   }
 
   public async start(): Promise<void> {
+    await this.storage.syncModels()
     this.events = await loadEventsFromFiles(EVENTS_DIR)
     this.commands = await loadCommandsFromFiles(COMMANDS_DIR)
     this.startEventListeners()
@@ -37,7 +41,7 @@ export default class Bot {
   private startEventListeners(): void {
     for (const event of this.events) {
       if (event.once) this.client.once(event.name, event.execute)
-      else this.client.on(event.name, (...args) => event.execute(...args, this.commands))
+      else this.client.on(event.name, (...args) => event.execute(...args, this.commands, this.storage))
     }
     process.on('unhandledRejection', error => console.error('Unhandled promise rejection:', error))
   }

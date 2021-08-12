@@ -1,14 +1,26 @@
-import {CommandInteraction} from 'discord.js'
 import {ExecuteCommand} from '../types'
+import replies from '../replies'
+import descriptions from '../description'
 
 const command: ExecuteCommand = {
   name: 'set_role',
-  description: 'Указывает на какую роль бот должен назначать участников Crypton Academy.',
-  execute: async (interaction: CommandInteraction): Promise<void> => {
-    // await interaction.deferReply({ephemeral: true})
-    await interaction.reply({content: 'Теперь участникам Crypton Academy будет назначаться эта роль.'})
+  description: descriptions.SET_ROLE,
+  execute: async (interaction, storage): Promise<void> => {
+    if (!interaction.guild) return interaction.reply(replies.ONLY_SERVER)
+    await interaction.deferReply({ephemeral: true})
 
-    // TODO записывает в storage какая роль должна быть у участников криптона на этом сервере
+    const role = interaction.options.getRole('role')
+    if (!role) {
+      await interaction.editReply(replies.SET_ROLE)
+      return
+    }
+
+    const guildStorage = await storage.getGuild(interaction.guild.id)
+
+    if (!guildStorage) await storage.addGuild(interaction.guild.id, role.id)
+    else await storage.editGuild(guildStorage.id, role.id, guildStorage.active)
+
+    await interaction.editReply(replies.ROLE_ASSIGNED(role.name))
   },
   options: [
     {
