@@ -1,22 +1,15 @@
-const ephemeral = true
-
 const replies = {
-  ACTIVATED: {content: 'Автоматическое назначение ролей запущено!', ephemeral},
-  DEACTIVATED: {content: 'Автоматическое назначение ролей остановлено!', ephemeral},
-  FIRST_SET_ROLE: {
-    content: '[ОТМЕНЕНО] Сперва укажите роль участников Crypton Academy! \nИспользуйте команду: /set_role',
-    ephemeral
-  },
-  SET_ROLE: {content: '[ОТМЕНЕНО] Укажите роль!', ephemeral},
+  ACTIVATED: {content: 'Автоматическое назначение ролей запущено!'},
+  DEACTIVATED: {content: 'Автоматическое назначение ролей остановлено!'},
+  FIRST_SET_ROLE: {content: '[ОТМЕНЕНО] Сперва укажите роль участников Crypton Academy! \nИспользуйте команду: /set_role'},
+  SET_ROLE: {content: '[ОТМЕНЕНО] Укажите роль!'},
+  ONLY_ADMIN: {content: '[ОТМЕНЕНО] Только админ может использовать эту команду!'},
   ROLE_SHOULD_LOWER: {content: '[ОТМЕНЕНО] Назначаемая роль должна быть ниже роли бота!'},
-  ROLE_ASSIGNED: (nameRole: string) => {
-    return {content: `Теперь участникам Crypton Academy будет назначаться роль ${nameRole}!`, ephemeral: true}
-  },
+  NOT_FOUND_COMMAND: {content: '[ОТМЕНЕНО] Такой команды не существует!'},
+  COMMAND_ERROR: {content: 'При выполнении этой команды произошла ошибка!'},
+  ROLE_ASSIGNED: (nameRole: string) => ({content: `Теперь участникам Crypton Academy будет назначаться роль ${nameRole}!`}),
   INFO: (role: string | undefined, active: boolean | undefined) => {
-    return {
-      content: `Назначенная роль: ${role ?? 'Отсутствует'} \nСтатус бота: ${active ? 'Активен' : 'Неактивен'}`,
-      ephemeral: true
-    }
+    return {content: `Назначенная роль: ${role ?? 'Отсутствует'} \nСтатус бота: ${active ? 'Активен' : 'Неактивен'}`}
   }
 }
 

@@ -1,11 +1,12 @@
 import {readdirSync} from 'fs'
 import {Command, ExecuteCommand} from './types'
-// TODO нужно так же сравнивать options
+
 export function isDifferentCommands(commandsOne: Command[], commandsTwo: Command[]): boolean {
   if (commandsOne.length !== commandsTwo.length) return true
   for (const valueCommandsOne of commandsOne) {
     const valueCommandsTwo = commandsTwo.find(value => {
-      return value.name === valueCommandsOne.name && value.description === valueCommandsOne.description
+      if (value.name !== valueCommandsOne.name || value.description !== valueCommandsOne.description) return false
+      return JSON.stringify(value.options) === JSON.stringify(valueCommandsOne.options)
     })
     if (!valueCommandsTwo) return true
   }

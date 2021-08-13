@@ -1,6 +1,7 @@
 import {ModelCtor, Options, Sequelize} from 'sequelize'
 import guildModel from './models/guild'
 import config from '../../config'
+import {GuildSQLite} from './models/types'
 
 const OPTIONS_SEQUELIZE: Options = {
   dialect: 'sqlite',
@@ -34,13 +35,13 @@ export default class Storage {
   }
 
   public async getGuild(id: string): Promise<GuildModel | undefined> {
-    const guild = await this.Guilds.findOne({where: {id}})
+    const guild = await this.Guilds.findOne({where: {id}}) as GuildSQLite
     if (!guild) return undefined
     return {id: guild.id, roleAcademyID: guild.role_academy_id, active: guild.active}
   }
 
   public async getGuilds(): Promise<GuildModel[]> {
-    const guilds = await this.Guilds.findAll()
+    const guilds = await this.Guilds.findAll() as GuildSQLite[]
     return guilds.map(guild => ({id: guild.id, roleAcademyID: guild.role_academy_id, active: guild.active}))
   }
 }

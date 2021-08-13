@@ -6,11 +6,8 @@ const command: ExecuteCommand = {
   name: 'info',
   description: descriptions.INFO,
   execute: async (interaction, storage) => {
-    if (!interaction.guild) return
-    await interaction.deferReply({ephemeral: true})
-
-    const guildStorage = await storage.getGuild(interaction.guild.id)
-    const role = interaction.guild.roles.cache.find(value => value.id === guildStorage?.roleAcademyID)
+    const guildStorage = await storage.getGuild(interaction.guild!.id)
+    const role = interaction.guild!.roles.cache.find(value => value.id === guildStorage?.roleAcademyID)
 
     await interaction.editReply(replies.INFO(role?.name, guildStorage?.active))
   }
