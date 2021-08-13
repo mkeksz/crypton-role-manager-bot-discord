@@ -42,33 +42,32 @@ export default class RoleAssigner {
     for (const guildStorage of guildsStorage) {
       await sleep(this.millisecondsIntervals.guild)
       if (!guildStorage.roleAcademyID || !guildStorage.active) continue
+
       const guild = await this.client.getGuildByID(guildStorage.id)
       if (!guild || guild.deleted) continue
+
       const isCorrectRoleAcademy = await RoleAssigner.isCorrectRoleAcademy(guild, guildStorage.roleAcademyID)
       if (!isCorrectRoleAcademy) continue
+
       const members = await guild.members.fetch()
       await this.assignMembers(members.values(), guildStorage.roleAcademyID)
     }
   }
 
   private async assignMembers(members: IterableIterator<GuildMember>, roleAcademyID: string): Promise<void> {
-    console.log('-----')
     for (const member of members) {
       const isAdmin = member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)
       if (member.user.bot || member.deleted || isAdmin) continue
-
-      console.log(member.user.tag, '||', member.guild.name, '||', member.roles.cache.map(value => value.name))
-
       const hasRoleAcademy = member.roles.cache.has(roleAcademyID)
       await sleep(this.millisecondsIntervals.member)
       const isMemberCrypton = this.crypton.isMember(member.user.tag)
 
       if (isMemberCrypton && !hasRoleAcademy) {
         await member.roles.add(roleAcademyID)
-        console.log('added role')
+        console.info(member.user.tag, '||', member.guild.name, '|| added role')
       } else if (!isMemberCrypton && hasRoleAcademy) {
         await member.roles.remove(roleAcademyID)
-        console.log('removed role')
+        console.info(member.user.tag, '||', member.guild.name, '|| removed role')
       }
     }
   }

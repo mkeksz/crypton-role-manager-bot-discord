@@ -8,7 +8,6 @@ const event: ExecuteEvent = {
   once: false,
   execute: async (interaction: Interaction, commands: ExecuteCommand[], storage: Storage) => {
     if (!interaction.isCommand() || !interaction.guild || interaction.user.bot) return
-
     await interaction.deferReply({ephemeral: true})
 
     const permissions = interaction.member?.permissions as Permissions

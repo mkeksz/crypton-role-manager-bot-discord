@@ -1,4 +1,4 @@
-import {Client, ClientEvents, Collection, Guild, Intents, OAuth2Guild, Snowflake} from 'discord.js'
+import {Client, ClientEvents, Guild, Intents} from 'discord.js'
 import CommandManager from './CommandManager'
 import config from '../config'
 
@@ -28,10 +28,6 @@ export default class ClientBot {
 
   public once<K extends keyof ClientEvents>(eventName: K, callback: (...args: ClientEvents[K]) => void): void {
     this.client.once(eventName, callback)
-  }
-
-  public async getGuilds(): Promise<Collection<Snowflake, OAuth2Guild>> {
-    return this.client.guilds.fetch()
   }
 
   public async getGuildByID(guildID: string): Promise<Guild | undefined> {

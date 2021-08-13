@@ -1,7 +1,7 @@
 import {ModelCtor, Options, Sequelize} from 'sequelize'
+import {GuildSQLite} from './models/types'
 import guildModel from './models/guild'
 import config from '../../config'
-import {GuildSQLite} from './models/types'
 
 const OPTIONS_SEQUELIZE: Options = {
   dialect: 'sqlite',

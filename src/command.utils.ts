@@ -1,14 +1,15 @@
 import {readdirSync} from 'fs'
 import {Command, ExecuteCommand} from './types'
+import {isDifferentArrayObjects} from './utils'
 
 export function isDifferentCommands(commandsOne: Command[], commandsTwo: Command[]): boolean {
   if (commandsOne.length !== commandsTwo.length) return true
-  for (const valueCommandsOne of commandsOne) {
-    const valueCommandsTwo = commandsTwo.find(value => {
-      if (value.name !== valueCommandsOne.name || value.description !== valueCommandsOne.description) return false
-      return JSON.stringify(value.options) === JSON.stringify(valueCommandsOne.options)
+  for (const commandOne of commandsOne) {
+    const command = commandsTwo.find(commandTwo => {
+      if (commandTwo.name !== commandOne.name || commandTwo.description !== commandOne.description) return false
+      return !isDifferentArrayObjects(commandOne.options ?? [], commandTwo.options ?? [])
     })
-    if (!valueCommandsTwo) return true
+    if (!command) return true
   }
   return false
 }

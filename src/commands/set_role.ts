@@ -1,6 +1,6 @@
 import {ExecuteCommand} from '../types'
-import replies from '../replies'
 import descriptions from '../description'
+import replies from '../replies'
 
 const command: ExecuteCommand = {
   name: 'set_role',
